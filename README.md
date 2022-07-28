@@ -5,10 +5,10 @@ Authors: Jie Feng, Yuanyuan Shi, Guannan Qu, Steven H. Low, Anima Anandkumar, Ad
 ![plot](./hyperparameters.png)
 # How to train
 '''
-python train_DDPG.py --algorithm safe-ddpg --env_name 13bus --status train
-#customize your own algorithm, env_name and status
-#env: 13bus,123bus,13bus3p
-#algorithm: linear, safe-ddpg,ddpg
-#status: train,test
-#check points are available
+>python train_DDPG.py --algorithm safe-ddpg --env_name 13bus --status train<br />
+#customize your own algorithm, env_name and status<br />
+#env: 13bus,123bus,13bus3p<br />
+#algorithm: linear, safe-ddpg,ddpg<br />
+#status: train,test<br />
+#check points are available<br />
 '''
