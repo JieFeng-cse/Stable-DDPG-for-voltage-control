@@ -3,7 +3,8 @@ This repository contains source code necessary to reproduce the results presente
 Authors: Jie Feng, Yuanyuan Shi, Guannan Qu, Steven H. Low, Anima Anandkumar, Adam Wierman<br />
 The paper is available here (https://arxiv.org/pdf/2209.07669.pdf).
 # hyper-parameters
-![plot](./hyperparameters.png)
+![plot](./hyperparameters1.png)
+![plot](./hyperparameters2.png)
 # How to train
 
 >python train_DDPG.py --algorithm safe-ddpg --env_name 13bus --status train<br />
