@@ -14,5 +14,15 @@ The paper is available here (https://arxiv.org/pdf/2209.07669.pdf).
 #status: train,test<br />
 #check points are available<br />
 
-
-Thank you!
+# Citation
+If you find our code helpful, please cite our paper! :)
+````
+@misc{feng2022stability,
+      title={Stability Constrained Reinforcement Learning for Decentralized Real-Time Voltage Control}, 
+      author={Jie Feng and Yuanyuan Shi and Guannan Qu and Steven H. Low and Anima Anandkumar and Adam Wierman},
+      year={2022},
+      eprint={2209.07669},
+      archivePrefix={arXiv},
+      primaryClass={eess.SY}
+}
+````
