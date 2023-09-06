@@ -16,7 +16,7 @@ import pandas as pd
 import math
 
 class IEEE13bus(gym.Env):
-    def __init__(self, pp_net, injection_bus, v0=1, vmax=1.05, vmin=0.95):
+    def __init__(self, pp_net, injection_bus, v0=1, vmax=1.05, vmin=0.95, all_bus=False):
         self.network =  pp_net
         self.obs_dim = 1
         self.action_dim = 1
@@ -33,6 +33,7 @@ class IEEE13bus(gym.Env):
         self.gen0_q = np.copy(self.network.sgen['q_mvar'])
         
         self.state = np.ones(self.agentnum, )
+        self.all_bus = all_bus
 
     
     def step_Preward(self, action, p_action): 
@@ -139,6 +140,9 @@ class IEEE13bus(gym.Env):
             self.network.sgen.at[0, 'p_mw'] = -0.5*np.random.uniform(1, 7)
             self.network.sgen.at[1, 'p_mw'] = -0.8*np.random.uniform(1, 4)
             self.network.sgen.at[2, 'p_mw'] = -0.3*np.random.uniform(1, 5)
+            if self.all_bus:
+                for i in range(len(self.injection_bus)):
+                    self.network.sgen.at[i, 'p_mw'] = -0.3*np.random.uniform(1, 2.5)
         elif(senario == 1): #high voltage 
             self.network.sgen['p_mw'] = 0.0
             self.network.sgen['q_mvar'] = 0.0
@@ -155,6 +159,12 @@ class IEEE13bus(gym.Env):
             
             self.network.sgen.at[10, 'p_mw'] = np.random.uniform(0.2, 3)
             self.network.sgen.at[11, 'p_mw'] = np.random.uniform(0, 1.5)
+            #for all buses scheme
+            if self.all_bus:
+                self.network.sgen.at[6, 'p_mw'] = 0.5*np.random.uniform(1, 2)
+                self.network.sgen.at[7, 'p_mw'] = 0.2*np.random.uniform(1, 3)
+                self.network.sgen.at[8, 'p_mw'] = 0.2*np.random.uniform(2, 3)
+                self.network.sgen.at[9, 'p_mw'] = np.random.uniform(0.1, 0.5)
             
         
         pp.runpp(self.network, algorithm='bfsw')
@@ -203,15 +213,16 @@ def create_13bus():
 
 if __name__ == "__main__":
     net = create_13bus()
-    injection_bus = np.array([1,2,3,4,5,6, 7, 8,9,10,11,12])
+    # injection_bus = np.array([1,2,3,4,5,6, 7, 8,9,10,11,12])
+    injection_bus = np.array([2, 7, 9])
     env = IEEE13bus(net, injection_bus)
     state_list = []
     for i in range(200):
         state = env.reset(i)
         state_list.append(state)
     state_list = np.array(state_list)
-    fig, axs = plt.subplots(1, 12, figsize=(15,3))
-    for i in range(12):
+    fig, axs = plt.subplots(1, len(injection_bus), figsize=(15,3))
+    for i in range(len(injection_bus)):
         axs[i].hist(state_list[:,i])
     plt.show()
     

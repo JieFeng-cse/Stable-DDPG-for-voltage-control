@@ -5,8 +5,9 @@ The paper is available here (https://arxiv.org/pdf/2209.07669.pdf).
 # hyper-parameters
 ![plot](./hyperparameters1.png)
 ![plot](./hyperparameters2.png)
-# How to train
+We use a more conservative deadband for both liner and monotone neural network controller following Califronia standard. (3% instead of 5%)
 
+# How to train
 >python train_DDPG.py --algorithm safe-ddpg --env_name 13bus --status train<br />
 #customize your own algorithm, env_name and status<br />
 #env: 13bus,123bus,13bus3p<br />
@@ -14,8 +15,13 @@ The paper is available here (https://arxiv.org/pdf/2209.07669.pdf).
 #status: train,test<br />
 #check points are available<br />
 
+# Real World Data
+The real world PV generation and load profile is available. The trajectory can be ploted with test_real_data.py
+The testing code creates a one-day trajectory (Sampling frequency 1 Hz). It will take a while to generate the plot.
+
 # Citation
 If you find our code helpful, please cite our paper! :)
+This paper will appear in Transactions on Control of Network Systems (TCNS) shortly.
 ````
 @misc{feng2022stability,
       title={Stability Constrained Reinforcement Learning for Decentralized Real-Time Voltage Control}, 
