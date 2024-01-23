@@ -1,7 +1,7 @@
 # Stability Constrained Reinforcement Learning for Real-Time Voltage Control in Distribution Systems
 This repository contains source code necessary to reproduce the results presented in the paper with the same title. It also provides an OpenAI Gym environment for training various Reinforcement Learning algorithms in the IEEE-123 bus and IEEE-13 bus test case.<br />
 Authors: Jie Feng, Yuanyuan Shi, Guannan Qu, Steven H. Low, Anima Anandkumar, Adam Wierman<br />
-The paper is available here (https://arxiv.org/pdf/2209.07669.pdf).
+This paper is published in Transactions on Control of Network Systems (TCNS) (https://ieeexplore.ieee.org/abstract/document/10336939).
 # hyper-parameters
 ![plot](./hyperparameters1.png)
 ![plot](./hyperparameters2.png)
@@ -21,14 +21,16 @@ The testing code creates a one-day trajectory (Sampling frequency 1 Hz). It will
 
 # Citation
 If you find our code helpful, please cite our paper! :)
-This paper will appear in Transactions on Control of Network Systems (TCNS) shortly.
+
 ````
-@misc{feng2022stability,
-      title={Stability Constrained Reinforcement Learning for Decentralized Real-Time Voltage Control}, 
-      author={Jie Feng and Yuanyuan Shi and Guannan Qu and Steven H. Low and Anima Anandkumar and Adam Wierman},
-      year={2022},
-      eprint={2209.07669},
-      archivePrefix={arXiv},
-      primaryClass={eess.SY}
-}
+@ARTICLE{10336939,
+  author={Feng, Jie and Shi, Yuanyuan and Qu, Guannan and Low, Steven H. and Anandkumar, Anima and Wierman, Adam},
+  journal={IEEE Transactions on Control of Network Systems}, 
+  title={Stability Constrained Reinforcement Learning for Decentralized Real-Time Voltage Control}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-12},
+  doi={10.1109/TCNS.2023.3338240}}
+
 ````
