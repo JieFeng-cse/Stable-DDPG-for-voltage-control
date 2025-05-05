@@ -239,7 +239,7 @@ class SafePolicy3phase(nn.Module):
                 action = self.policy_c(state[:,i].unsqueeze(-1))
                 action_list.append(action)
         action = torch.cat(action_list,dim=1)
-        action += (torch.maximum(state-1.03, torch.zeros_like(state).to(self.device))-torch.maximum(0.97-state,  torch.zeros_like(state).to(self.device)))*0.01
+        action += (torch.maximum(state-1.03, torch.zeros_like(state).to(self.device))-torch.maximum(0.97-state,  torch.zeros_like(state).to(self.device)))*0.1
         return action
     def get_action(self, state):
         state = torch.FloatTensor(state).to(self.device)

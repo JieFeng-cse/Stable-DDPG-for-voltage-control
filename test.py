@@ -30,6 +30,7 @@ from env_single_phase_13bus import IEEE13bus, create_13bus
 from env_single_phase_123bus import IEEE123bus, create_123bus
 from safeDDPG import ValueNetwork, SafePolicyNetwork, DDPG, PolicyNetwork, SafePolicy3phase, LinearPolicy
 from IEEE_13_3p import IEEE13bus3p, create_13bus3p
+from IEEE_123_3p import IEEE123bus3p, create_123bus3p
 
 
 use_cuda = torch.cuda.is_available()
@@ -71,6 +72,13 @@ if args.env_name == '13bus3p':
     max_ac = 0.4
     env = IEEE13bus3p(pp_net,injection_bus_dict)
     num_agent = len(injection_bus)
+    ph_num=3
+if args.env_name == '123bus3p':
+    injection_bus = np.array([10, 11, 16, 20, 33, 36, 48, 59, 66, 75, 83, 92, 104, 61])
+    net, injection_bus_dict = create_123bus3p(injection_bus)    
+    env = IEEE123bus3p(net, injection_bus_dict)
+    num_agent = len(injection_bus)
+    max_ac = 0.5
     ph_num=3
 
 if ph_num == 3:
@@ -261,8 +269,8 @@ def plot_traj():
     plt.tight_layout()
     plt.show()
 
-#test success rate, voltage violation after 40 steps
-def test_suc_rate(algm, step_num=60):
+#test success rate
+def test_suc_rate(algm, step_num=60, env_name='13bus'):
     success_num = 0
     final_state_list = []
     final_step_list = []
@@ -314,7 +322,11 @@ def test_suc_rate(algm, step_num=60):
             overall_time += time_elapse
             # PI policy    
             action = last_action - np.asarray(action)
-            control_action.append(np.abs(action))
+            if env_name == '13bus3p':
+                control_action.append(np.abs(action)/10) #unit issue. Here action is 0.1 Mvar. Please focus on the ratio for comparison.
+            else:
+                # Note: there might be unit mismatch for the paper (3 phase), this code can reproduce the exact values reported in the paper.
+                control_action.append(np.abs(action))
             # execute action a_t and observe reward r_t and observe next state s_{t+1}
             next_state, reward, reward_sep, done = env.step_Preward(action, (last_action-action))
             if done:
@@ -331,8 +343,8 @@ def test_suc_rate(algm, step_num=60):
         #     final_step_list.append(step_num)
         #     control_cost_list.append(np.sum(np.asarray(control_action)))
         final_state_list.append(next_state)
-    print(f'result for {algm}')
-    print(success_num)
+    print(f'result for {algm} for {env_name}')
+    print('Success trials out of 500 trajecotries: ',success_num)
     print(np.mean(final_step_list), np.std(final_step_list))
     print("Elapsed Time: {:.6f} ms".format(overall_time/np.sum(final_step_list)*1000/3))
     print('cost',np.mean(control_cost_list), np.std(control_cost_list))
@@ -745,9 +757,9 @@ def get_id(phases):
 if __name__ == "__main__":
     # plot_traj_1b_mt()
     # print("test")
-    # test_suc_rate('safe-ddpg',step_num=100) #safe-ddpg
-    # test_suc_rate('linear',step_num=100)
-    test_suc_rate('ddpg',step_num=100)
+    test_suc_rate('safe-ddpg',step_num=100, env_name=args.env_name) #safe-ddpg
+    test_suc_rate('linear',step_num=100, env_name=args.env_name)
+    test_suc_rate('ddpg',step_num=100, env_name=args.env_name) #now only successful cases are considered.
     # plot_bar_avg(len(injection_bus))
     # plot_bar(len(injection_bus))
     # test_suc_rate('linear')

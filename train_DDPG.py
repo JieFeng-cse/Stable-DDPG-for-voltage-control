@@ -23,6 +23,7 @@ import argparse
 from env_single_phase_13bus import IEEE13bus, create_13bus
 from env_single_phase_123bus import IEEE123bus, create_123bus
 from IEEE_13_3p import IEEE13bus3p, create_13bus3p
+from IEEE_123_3p import IEEE123bus3p, create_123bus3p
 from safeDDPG import ValueNetwork, SafePolicyNetwork, DDPG, ReplayBuffer, ReplayBufferPI, PolicyNetwork, SafePolicy3phase, LinearPolicy
 
 use_cuda = torch.cuda.is_available()
@@ -73,6 +74,20 @@ if args.env_name == '13bus3p':
         plr = 1e-4
     if args.algorithm == 'ddpg':
         plr = 5e-5
+
+if args.env_name == '123bus3p':
+    injection_bus = np.array([10, 11, 16, 20, 33, 36, 48, 59, 66, 75, 83, 92, 104, 61])
+    net, injection_bus_dict = create_123bus3p(injection_bus)    
+    env = IEEE123bus3p(net, injection_bus_dict)
+    num_agent = len(injection_bus)
+    max_ac = 0.5
+    ph_num=3
+    if args.algorithm == 'safe-ddpg':
+        plr = 5e-5  
+    if args.algorithm == 'linear':
+        plr =5e-5  
+    if args.algorithm == 'ddpg':
+        plr = 1e-5
 
 
 
@@ -188,6 +203,8 @@ elif (FLAG ==1):
         # num_episodes *= 2
     if args.env_name =='13bus3p':
         num_steps = 30
+    if args.env_name =='123bus3p':
+        num_steps = 100
     batch_size = 256
 
     rewards = []
